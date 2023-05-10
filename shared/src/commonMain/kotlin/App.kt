@@ -1,38 +1,75 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import models.AppData
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import org.lighthousegames.logging.KmLog
 
-@OptIn(ExperimentalResourceApi::class)
+val logger = KmLog("com.ngengeapps.io")
+
+@OptIn(ExperimentalResourceApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun App() {
     MaterialTheme {
-        var greetingText by remember { mutableStateOf("Hello, World!") }
-        var showImage by remember { mutableStateOf(false) }
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = {
-                greetingText = "Hello, ${getPlatformName()}"
-                showImage = !showImage
-            }) {
-                Text(greetingText)
+        var appData: AppData? by rememberSaveable {
+            mutableStateOf(null)
+        }
+
+        var isError: Boolean by rememberSaveable { mutableStateOf(false) }
+        val file by remember { mutableStateOf("io_2023.json") }
+
+        LaunchedEffect(file) {
+
+            try {
+
+                appData = Utils.getAppData(file)
+                logger.i {
+                    "The data is $appData"
+                }
+
+            } catch (ex: Exception) {
+                logger.e {
+                    "There was an exception $ex"
+                }
+                isError = true
             }
-            AnimatedVisibility(showImage) {
-                Image(
-                    painterResource("compose-multiplatform.xml"),
-                    null
-                )
+
+        }
+        if (!isError && appData != null) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+
+                stickyHeader {
+                    TopAppBar {
+                        Text("IO 2023 Sessions")
+                    }
+                }
+                itemsIndexed(items = appData!!.programs) { index, item ->
+                    Text(item.title)
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
             }
         }
     }
