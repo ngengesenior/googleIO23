@@ -9,7 +9,7 @@ The next on the plate is getting to parse the JSON file using Compose Multiplatf
 Just flow along, as I will try my best to
 write clean code and make the app to be adaptive.
 
-[!shot](shot.png)
+<img src="shot.png" height="350">
 
 [![official project](http://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
