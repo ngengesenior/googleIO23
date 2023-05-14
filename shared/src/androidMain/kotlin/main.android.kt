@@ -1,5 +1,30 @@
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import coil.compose.SubcomposeAsyncImage
 
 actual fun getPlatformName(): String = "Android"
 
-@Composable fun MainView() = App()
+@Composable
+actual fun UrlImage(url: String, modifier: Modifier) {
+    SubcomposeAsyncImage(
+        model = url,
+        loading = {
+            CircularProgressIndicator()
+        },
+        contentDescription = null,
+        contentScale = ContentScale.Fit,
+        modifier = modifier.fillMaxWidth()
+            .height(200.dp)
+            .clip(RoundedCornerShape(25))
+    )
+}
+
+@Composable
+fun MainView() = App()

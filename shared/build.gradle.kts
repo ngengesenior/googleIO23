@@ -33,6 +33,7 @@ kotlin {
     sourceSets {
         val ktorVersion = "2.3.0"
         val loggingVersion = "1.3.0"
+        val coilVersion = "2.3.0"
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
@@ -43,6 +44,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 api("org.lighthousegames:logging:$loggingVersion")
             }
@@ -53,6 +55,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.0")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation("io.coil-kt:coil-compose:$coilVersion")
             }
         }
         val iosX64Main by getting
