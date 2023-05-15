@@ -25,5 +25,10 @@ data class Session(
 )
 
 
-@Serializable class AppData(val speakers: List<Speaker>,
-    val programs:List<Session>)
+@Serializable
+class AppData(
+    val speakers: List<Speaker>,
+    val programs: List<Session>
+)
+
+
